@@ -46,7 +46,7 @@ def get_token(token_file='_token', weibo_client=None):
 #模拟授权并且获取回调地址上的code，以获得acces token和token过期的UNIX时间
 def get_code(weibo_client):
     referer_url = weibo_client.get_authorize_url()
-    print 'open this authorize url: %s' % referer_url
+    # print 'open this authorize url: %s' % referer_url
 
     cookies = urllib2.HTTPCookieProcessor()
     opener = urllib2.build_opener(cookies)
