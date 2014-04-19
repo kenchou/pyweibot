@@ -58,8 +58,10 @@ parser.add_argument('-v', '--verbose', action='count',          help='verbosity'
 
 args = parser.parse_args()
 
+work_path = os.path.split(os.path.realpath(__file__))[0]
+
 # load config
-config = get_config(args.config if args.config else 'weibo.json')
+config = get_config(args.config if args.config else os.path.join(work_path, 'weibo.json'))
 APP_KEY = config['APP_KEY']
 APP_SECRET = config['APP_SECRET']
 
@@ -67,11 +69,9 @@ message = args.message if args.message else raw_input()
 message = "%s %s" % (message, args.at)
 picture_file = args.file
 
-token_file = os.path.join(os.path.split(os.path.realpath(__file__))[0], '_token')
-
 weibo_client = weibo.APIClient(app_key=APP_KEY, app_secret=APP_SECRET, redirect_uri=CALLBACK_URL)
 
-token = get_token(token_file=token_file, weibo_client=weibo_client)
+token = get_token(token_file=os.path.join(work_path, '_token'), weibo_client=weibo_client)
 weibo_client.set_access_token(token.access_token, token.expires_in)
 
 if picture_file:
@@ -82,3 +82,4 @@ if picture_file:
 else:
     # 发普通微博
     weibo_client.statuses.update.post(status=message)
+
